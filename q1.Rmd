@@ -1,0 +1,56 @@
+---
+title: "Simulate of Exponential Distribution"
+author: "Tony"
+output: pdf_document
+---
+# 1. Overview :
+We will simulate how means/sd/variance of exponential distribution random samples behave like normal distribution 
+  
+# 2. Simulation
+Generate 1000x40 number of exponential random number using rate=.2
+store the raw data in expdata.
+Store the 1000 means of each 40 samples in expmeans.
+Store the 1000 variances of each 40 samples in expVars.
+Store the 1000 standard deviation of each 40 samples in expSDs.  
+```{r}
+expdata <- matrix(nrow=1000, ncol=40)
+expmeans <- expVars <- expSDs <- c(rep(NULL, t))
+for (i in 1:1000)  {
+        expdata[i,] <- rexp(40, .2)
+        expmeans[i] <- mean(expdata[i,])
+        expVars[i] <- var(expdata[i,])
+        expSDs[i] <- sd(expdata[i,])
+}
+```
+\newpage
+
+# 3. Sample Mean versus Theoretical Mean :
+Histogram of the sample data is as below.
+We hightlight the theoretical mean using **red** vertical line (5 = 1/lambda = 1/.2).
+Also the **blue** vertical line is the mean of the sample data = `r mean(expdata)`.You can see that mean of the sample data is almost the same as theoretical mean.  
+```{r, echo=FALSE}
+hist(expdata, main="Sample Mean vs Theoretical Mean")
+abline(v=5, lwd=1, col="red")
+abline(v=mean(expdata), lwd=1, col="blue")
+```
+
+\newpage
+
+# 4. Sample Variance versus Theoretical Variance:
+Let's see the histogram of the 1000 variances of the sample data.
+Also we hightlight the theoretical variance (`r (1/.2)^2`) with **red** vertical line.
+It's close to the normal distribution with a little skewness.  
+```{r, echo=FALSE}
+hist(expVars, main="Sample Variance versus Theoretical Variance")
+abline(v=5^2, lwd=1, col="red")
+```
+\newpage 
+
+# 5. Distribution :
+Lastly, we can see the distribution of the means is close to normal distribution by ploting the histogram of the 1000 means. Although the sample data is from exponential distribution.
+This is the Central Limit Theory.
+The vertical red line is the theoretical mean (1/.2 = 5)  
+```{r, echo=FALSE}
+hist(expmeans, main="Distribution of 1000 means")
+abline(v=5, lwd=2, col="red")
+```
